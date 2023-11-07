@@ -1,6 +1,7 @@
 import './Profile.css';
 import Header from '../Header/Header';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Profile() {
   const [name, setName] = useState('Виталий');
@@ -40,6 +41,8 @@ function Profile() {
               id='name'
               value={name}
               onChange={handleChangeName}
+              minLength={2}
+              maxLength={30}
             />
           ) : (
             <p className='profile__text-value'>{name}</p>
@@ -69,7 +72,9 @@ function Profile() {
             >
               Редактировать
             </button>
-            <button className='profile__exit-button'>Выйти из аккаунта</button>
+            <Link to='/signin' className='profile__exit-button'>
+              Выйти из аккаунта
+            </Link>
           </>
         ) : (
           <button

@@ -138,6 +138,7 @@
 
   .about-project__description {
     flex-direction: column;
+    align-items: center;
   }
 
   .about-project__subtitle {
@@ -163,6 +164,7 @@
     margin-top: 27px;
     grid-template-columns: 100px 184px;
     grid-gap: 10px 0;
+    justify-content: center;
   }
 
   .about-project__time-one-week {

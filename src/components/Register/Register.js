@@ -22,6 +22,8 @@ function Register() {
               name='name'
               required
               value={'Виталий'}
+              minLength={2}
+              maxLength={30}
             />
           </div>
           <div className='register__email-container'>
@@ -47,6 +49,8 @@ function Register() {
               id='password'
               name='password'
               required
+              minLength={2}
+              maxLength={30}
             />
             <span className='register__input-error'>
               Что-то пошло не так...

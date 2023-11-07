@@ -36,6 +36,8 @@ function Login() {
               id='password'
               name='password'
               required
+              minLength={2}
+              maxLength={30}
             />
           </div>
         </div>

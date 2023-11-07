@@ -67,7 +67,12 @@
   margin-top: 220px;
 }
 
+.profile__button:hover {
+  opacity: 0.7;
+}
+
 .profile__exit-button {
+  text-decoration: none;
   color: #ee3465;
   cursor: pointer;
   margin: 0;
@@ -80,6 +85,10 @@
   letter-spacing: 0px;
   text-align: center;
   margin-top: 16px;
+}
+
+.profile__exit-button:hover {
+  opacity: 0.7;
 }
 
 .profile__input {

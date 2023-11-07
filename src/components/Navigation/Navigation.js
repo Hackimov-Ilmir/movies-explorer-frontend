@@ -21,7 +21,10 @@ function Navigation({ loggedIn, blackHeader }) {
         </Link>
       </div>
       <div className='navigation__profile'>
-        <Link className='navigation__link_active' href='/profile'>
+        <Link
+          className='navigation__link navigation__link_active'
+          to='/profile'
+        >
           Аккаунт
         </Link>
         <Link
@@ -83,7 +86,7 @@ function Navigation({ loggedIn, blackHeader }) {
           Сохранённые фильмы
         </NavLink>
         <div className='navigation__burger-profile'>
-          <Link className='navigation__burger-link-account' href='/profile'>
+          <Link className='navigation__burger-link-account' to='/profile'>
             Аккаунт
           </Link>
           <Link

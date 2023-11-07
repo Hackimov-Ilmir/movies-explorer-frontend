@@ -19,10 +19,11 @@
   line-height: 1.28;
 }
 
+.navigation__link:hover {
+  opacity: 0.7;
+}
+
 .navigation__link_active {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 14px;
   font-weight: 500;
   line-height: 1.14;
 }
@@ -46,6 +47,10 @@
   align-items: center;
 }
 
+.navigation__profile-icon:hover {
+  opacity: 0.7;
+}
+
 .navigation__profile-icon_black {
   background-color: #313131;
 }
@@ -64,6 +69,10 @@
   line-height: 16px;
 }
 
+.navigation__signup:hover {
+  opacity: 0.7;
+}
+
 .navigation__signin {
   text-decoration: none;
   font-size: 12px;
@@ -78,6 +87,10 @@
   border-radius: 3px;
   text-align: center;
   line-height: 32px;
+}
+
+.navigation__signin:hover {
+  opacity: 0.7;
 }
 
 .navigation__burger-button {
@@ -232,9 +245,19 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 520px) {
+  .navigation {
+    align-items: center;
+  }
+
   .navigation__burger-menu {
     width: 100%;
     padding: 18px;
+  }
+
+  .navigation__burger-button {
+    background-image: url(../../images/burger_button320.svg);
+    margin-right: 10px;
+    height: 48px;
   }
 
   .navigation__burger-link {

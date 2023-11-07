@@ -20,6 +20,10 @@
   margin-bottom: 100px;
 }
 
+.movies__add-button:hover {
+  opacity: 0.7;
+}
+
 @media screen and (min-width: 501px) and (max-width: 768px) {
   .movies__add-button {
     width: calc(100% - 60px);
