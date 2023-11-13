@@ -1,36 +1,73 @@
 import './MoviesCardList.css';
-import Preloader from '../Preloader/Preloader';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import filmimage from '../../images/pic__COLOR_pic.jpg';
-import filmimage1 from '../../images/pic__COLOR_pic-1.jpg';
-import filmimage2 from '../../images/pic__COLOR_pic-2.jpg';
-import filmimage3 from '../../images/pic__COLOR_pic-3.jpg';
-import filmimage4 from '../../images/pic__COLOR_pic-4.jpg';
-import filmimage5 from '../../images/pic__COLOR_pic-5.jpg';
-import filmimage6 from '../../images/pic__COLOR_pic-6.jpg';
-import filmimage7 from '../../images/pic__COLOR_pic-7.jpg';
-import filmimage8 from '../../images/pic__COLOR_pic-8.jpg';
-import filmimage9 from '../../images/pic__COLOR_pic-9.jpg';
-import filmimage10 from '../../images/pic__COLOR_pic-10.jpg';
-import filmimage11 from '../../images/pic__COLOR_pic-11.jpg';
+import { useLocation } from 'react-router-dom';
 
-function MoviesCardList({ saved }) {
+function MoviesCardList({
+  movies,
+  buttonType,
+  onSaveMovie,
+  onDeleteMovie,
+  onShowMoreMovies,
+  place,
+  isMovieInSaved,
+  movieIdForDelete,
+  savedMovies,
+  isRequestSuccessful,
+  showMoreButton,
+}) {
+  const { pathname } = useLocation();
+
+  const movieCardElements = movies.map((movieCard) => (
+    <div key={movieCard.id || movieCard._id}>
+      <MoviesCard
+        movieCard={movieCard}
+        buttonType={buttonType}
+        onSaveMovie={onSaveMovie}
+        onDeleteMovie={onDeleteMovie}
+        place={place}
+        isMovieInSaved={isMovieInSaved}
+        movieIdForDelete={movieIdForDelete}
+        IsSaved={
+          pathname === '/movies'
+            ? savedMovies.some(
+                (savedMovie) => savedMovie.movieId === movieCard.id
+              )
+            : false
+        }
+        savedMovies={savedMovies}
+      />
+    </div>
+  ));
+
   return (
-    <section className='movies-card-list'>
-      {false ? <Preloader></Preloader> : null}
-      <MoviesCard src={filmimage} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage1} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage2} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage3} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage4} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage5} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage6} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage7} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage8} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage9} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage10} saved={saved}></MoviesCard>
-      <MoviesCard src={filmimage11} saved={saved}></MoviesCard>
-    </section>
+    <>
+      <section>
+        {movies.length === 0 ? (
+          <p
+            className={`movies-card-list__not-found ${
+              !isRequestSuccessful
+                ? 'movies-card-list__not-found_req_unsuccsessful'
+                : ''
+            }`}
+          >
+            {!isRequestSuccessful
+              ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+              : 'Ничего не найдено'}
+          </p>
+        ) : (
+          <div className='movies-card-list'>{movieCardElements}</div>
+        )}
+      </section>
+      {showMoreButton && (
+        <button
+          className='movies-card-list__button'
+          type='button'
+          onClick={onShowMoreMovies}
+        >
+          Ещё
+        </button>
+      )}
+    </>
   );
 }
 

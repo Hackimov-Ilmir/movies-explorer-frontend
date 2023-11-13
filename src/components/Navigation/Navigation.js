@@ -13,12 +13,22 @@ function Navigation({ loggedIn, blackHeader }) {
   return loggedIn ? (
     <nav className='navigation'>
       <div className='navigation__links'>
-        <Link className='navigation__link' to='/movies'>
+        <NavLink
+          className={({ isActive }) =>
+            `navigation__link ${isActive ? 'navigation__link_active' : ''}`
+          }
+          to='/movies'
+        >
           Фильмы
-        </Link>
-        <Link className='navigation__link' to='/saved-movies'>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) =>
+            `navigation__link ${isActive ? 'navigation__link_active' : ''}`
+          }
+          to='/saved-movies'
+        >
           Сохранённые фильмы
-        </Link>
+        </NavLink>
       </div>
       <div className='navigation__profile'>
         <Link
