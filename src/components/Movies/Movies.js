@@ -39,10 +39,10 @@ function Movies({
     if (screenWidth >= 1280) {
       return moviesCards.slice(0, currentItems + 12);
     }
-    if (screenWidth > 480 && screenWidth < 1280) {
+    if (screenWidth > 768 && screenWidth < 1280) {
       return moviesCards.slice(0, currentItems + 8);
     }
-    if (screenWidth >= 320 || screenWidth <= 480) {
+    if (screenWidth >= 320 || screenWidth <= 768) {
       return moviesCards.slice(0, currentItems + 5);
     }
   }, [moviesCards, screenWidth, items]);
@@ -117,29 +117,29 @@ function Movies({
 
   return (
     <section className='movies'>
-      <Header loggedIn={true} blackHeader={true}></Header>
-      <SearchForm
-        onSubmit={onSubmit}
-        onFilter={onFilter}
-        moviesRequest={moviesRequest}
-        isCheckBoxChecked={isCheckBoxChecked}
-        isLoading={isLoading}
-      ></SearchForm>
-      {isLoading && <Preloader />}
-      {!isLoading && didTheUserSearch && (
-        <MoviesCardList
-          movies={moviesToShow}
-          buttonType='save'
-          onSaveMovie={onSaveMovie}
-          onDeleteMovie={onDeleteMovie}
-          onShowMoreMovies={handleShowMoreMovies}
-          place='movies'
-          isMovieInSaved={isMovieInSaved}
-          savedMovies={savedMovies}
-          isRequestSuccessful={isRequestSuccessful}
-          showMoreButton={showMoreButton}
-        />
-      )}
+      <div>
+        <Header loggedIn={true} blackHeader={true}></Header>
+        <SearchForm
+          onSubmit={onSubmit}
+          onFilter={onFilter}
+          moviesRequest={moviesRequest}
+          isCheckBoxChecked={isCheckBoxChecked}
+          isLoading={isLoading}
+        ></SearchForm>
+        {isLoading && <Preloader />}
+        {!isLoading && didTheUserSearch && (
+          <MoviesCardList
+            movies={moviesToShow}
+            onSaveMovie={onSaveMovie}
+            onDeleteMovie={onDeleteMovie}
+            onShowMoreMovies={handleShowMoreMovies}
+            isMovieInSaved={isMovieInSaved}
+            savedMovies={savedMovies}
+            isRequestSuccessful={isRequestSuccessful}
+            showMoreButton={showMoreButton}
+          />
+        )}
+      </div>
       <Footer></Footer>
     </section>
   );

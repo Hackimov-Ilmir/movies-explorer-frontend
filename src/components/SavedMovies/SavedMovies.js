@@ -18,23 +18,25 @@ function SavedMovies({
 
   return (
     <section className='saved-movies'>
-      <Header loggedIn={true} blackHeader={true}></Header>
-      <SearchForm
-        onFilter={onFilter}
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-      />
-      {isLoading && <Preloader />}
-      {!isLoading && storedSavedMovies.length > 0 && (
-        <MoviesCardList
-          movies={moviesCards}
-          buttonType='delete'
-          place='saved-movies'
-          onDeleteMovie={onDeleteMovie}
-          didTheUserSearch={didTheUserSearch}
-          isRequestSuccessful={isRequestSuccessful}
+      <div>
+        <Header loggedIn={true} blackHeader={true}></Header>
+        <SearchForm
+          onFilter={onFilter}
+          onSubmit={onSubmit}
+          isLoading={isLoading}
         />
-      )}
+        {isLoading && <Preloader />}
+        {!isLoading && storedSavedMovies.length > 0 && (
+          <MoviesCardList
+            movies={moviesCards}
+            buttonType='delete'
+            place='saved-movies'
+            onDeleteMovie={onDeleteMovie}
+            didTheUserSearch={didTheUserSearch}
+            isRequestSuccessful={isRequestSuccessful}
+          />
+        )}
+      </div>
       <Footer></Footer>
     </section>
   );

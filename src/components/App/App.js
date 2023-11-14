@@ -24,7 +24,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
   const [isLoginLoading, setIsLoginLoading] = useState(false);
-  const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [isMoviesLoading, setIsMoviesLoading] = useState(false);
   const [isSavedMoviesLoading, setIsSavedMoviesLoading] = useState(false);
   const [didTheUserSearch, setDidTheUserSearch] = useState(false);
@@ -32,6 +31,8 @@ function App() {
   const [isRequestSuccessful, setIsRequestSuccessful] = useState(true);
   const [isUserRequestSuccessful, setIsUserRequestSuccessful] = useState(true);
   const [errorText, setErrortext] = useState('');
+  const [isProfileUpdate, setIsProfileUpdate] = useState(false);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -69,7 +70,7 @@ function App() {
 
   useEffect(() => {
     const storedSavedMovies = JSON.parse(localStorage.getItem('saved-movies'));
-    if (storedSavedMovies && pathname === '/saved-movies') {
+    if (storedSavedMovies && pathname === '/movies') {
       setSavedMovies(storedSavedMovies);
     }
   }, [pathname]);
@@ -136,18 +137,15 @@ function App() {
 
   async function handleProfileSubmit(values) {
     setIsProfileEdit(true);
-    setIsProfileLoading(true);
     try {
       const userData = await mainApi.editProfile(values.name, values.email);
       setCurrentUser(userData);
+      setIsProfileUpdate(true);
     } catch (err) {
       console.log(err);
       setErrortext(err);
     } finally {
       setIsProfileEdit(false);
-      setTimeout(() => {
-        setIsProfileLoading(false);
-      }, 1500);
     }
   }
 
@@ -170,7 +168,7 @@ function App() {
           movie.nameEN.toLowerCase().includes(value.toLowerCase())
       );
       localStorage.setItem('foundMovies', JSON.stringify(foundMovies));
-      setFoundMovies(foundMovies); // этот стейт нужен для того, чтобы фильтровать фильмы в функции фильтрации
+      setFoundMovies(foundMovies);
       const checkboxState = localStorage.getItem('checkboxState');
       if (checkboxState === 'true') {
         const filteredFoundMovies = foundMovies.filter(
@@ -201,7 +199,7 @@ function App() {
           savedMovie.nameEN.toLowerCase().includes(value.toLowerCase())
       );
       setFoundSavedMovies(foundSavedMovies);
-      const checkboxState = localStorage.getItem('checkboxState');
+      const checkboxState = localStorage.getItem('checkboxSavedMoviesState');
       if (checkboxState === 'true') {
         const filteredFoundSavedMovies = foundSavedMovies.filter(
           (movie) => movie.duration <= 40
@@ -234,6 +232,7 @@ function App() {
   }
 
   function handleFilterSavedMovies(checked) {
+    localStorage.setItem('checkboxSavedMoviesState', checked);
     const filteredFoundSavedMovies = foundSavedMovies.filter(
       (movie) => movie.duration <= 40
     );
@@ -370,10 +369,10 @@ function App() {
                   element={Profile}
                   loggedIn={isLoggedIn}
                   isEdit={isProfileEdit}
-                  isLoading={isProfileLoading}
                   onSubmit={handleProfileSubmit}
                   onEditProfile={handleEditProfile}
                   onSignOut={handleSignOut}
+                  isProfileUpdate={isProfileUpdate}
                 />
               }
             />

@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 
 function MoviesCard({
   movieCard,
-  buttonType,
   onSaveMovie,
   onDeleteMovie,
   place,
@@ -76,7 +75,7 @@ function MoviesCard({
       ) : (
         <button
           className={`movies-card__button ${
-            isMovieSaved ? `movies-card__button_active` : ''
+            IsSaved ? `movies-card__button_active` : ''
           }
         `}
           type='button'
