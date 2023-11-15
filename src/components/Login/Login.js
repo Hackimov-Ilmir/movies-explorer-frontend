@@ -1,8 +1,29 @@
 import './Login.css';
 import logo from '../../images/logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useForm from '../../hooks/useForm';
+import { useEffect } from 'react';
 
-function Login() {
+function Login({
+  onSignin,
+  isRequestSuccessful,
+  errorText,
+  onCleanErrorText,
+  isLoading,
+  isLoggedIn,
+}) {
+  const { formValues, formErrors, isFormValid, handleInputChange } = useForm();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    isLoggedIn && navigate('/movies', { replace: true });
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSignin(formValues);
+  };
+
   return (
     <div className='login'>
       <div>
@@ -11,7 +32,7 @@ function Login() {
         </Link>
         <h1 className='login__title'>Рады видеть!</h1>
       </div>
-      <form className='login__form'>
+      <form className='login__form' onSubmit={handleSubmit}>
         <div>
           <div className='login__email-container'>
             <label className='login__label' for='email'>
@@ -23,8 +44,10 @@ function Login() {
               id='email'
               name='email'
               required
-              value={'pochta@yandex.ru'}
+              value={formValues.email || ''}
+              onChange={handleInputChange}
             />
+            <span className='login__input-error'>{formErrors.email}</span>
           </div>
           <div className='login__password-container'>
             <label className='login__label' for='password'>
@@ -38,16 +61,30 @@ function Login() {
               required
               minLength={2}
               maxLength={30}
+              value={formValues.password || ''}
+              onChange={handleInputChange}
             />
+            <span className='login__input-error'>{formErrors.password}</span>
           </div>
         </div>
         <div>
-          <button className='login__button' type='submit'>
+          <span className='login__input-error'>{errorText}</span>
+          <button
+            className={`login__button ${
+              !isFormValid && 'login__button_disabled'
+            }`}
+            type='submit'
+            disabled={!isFormValid}
+          >
             Войти
           </button>
           <p className='login__bottom'>
             Ещё не зарегистрированы?
-            <Link className='login__bottom-link' to='/signup'>
+            <Link
+              className='login__bottom-link'
+              to='/signup'
+              onClick={onCleanErrorText}
+            >
               Регистрация
             </Link>
           </p>

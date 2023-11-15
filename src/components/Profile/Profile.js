@@ -1,88 +1,123 @@
 import './Profile.css';
 import Header from '../Header/Header';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { nameRegex } from '../../utils/regex';
+import useForm from '../../hooks/useForm';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 
-function Profile() {
-  const [name, setName] = useState('Виталий');
-  const [email, setEmail] = useState('pochta@yandex.ru');
-  const [isEditing, setIsEditing] = useState(false);
+function Profile({
+  isEdit,
+  onSignOut,
+  onSubmit,
+  onEditProfile,
+  isProfileUpdate,
+}) {
+  const currentUser = useContext(CurrentUserContext);
+  const [isOtherUserData, setIsOtherUserData] = useState(false);
+  const { formValues, isFormValid, handleInputChange, resetFormValidation } =
+    useForm();
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  useEffect(() => {
+    resetFormValidation(
+      { name: currentUser.name, email: currentUser.email },
+      {},
+      false
+    );
+  }, [currentUser, resetFormValidation]);
 
-  const handleSave = () => {
-    setIsEditing(false);
-  };
+  useEffect(() => {
+    if (
+      formValues.name !== currentUser.name ||
+      formValues.email !== currentUser.email
+    ) {
+      setIsOtherUserData(true);
+    } else {
+      setIsOtherUserData(false);
+    }
+  }, [formValues.name, formValues.email, currentUser.name, currentUser.email]);
 
-  const handleChangeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleChangeEmail = (e) => {
-    setEmail(e.target.value);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formValues);
   };
 
   return (
     <>
       <Header loggedIn={true} blackHeader={true}></Header>
       <div className='profile'>
-        <h1 className='profile__title'>Привет, Виталий!</h1>
-
-        <div className='profile__name-container'>
-          <label className='profile__text' htmlFor='name'>
-            Имя
-          </label>
-          {isEditing ? (
+        <h1 className='profile__title'>Привет, {currentUser.name}</h1>
+        <form
+          onSubmit={handleSubmit}
+          noValidate
+          type='profile'
+          name='profile'
+          id='form'
+        >
+          <div className='profile__name-container'>
+            <label className='profile__text' htmlFor='name'>
+              Имя
+            </label>
             <input
               className='profile__input profile__text-value'
               type='text'
               id='name'
-              value={name}
-              onChange={handleChangeName}
+              name='name'
+              value={formValues.name || ''}
+              onChange={handleInputChange}
               minLength={2}
               maxLength={30}
+              required
+              pattern={nameRegex}
+              disabled={!isEdit}
             />
-          ) : (
-            <p className='profile__text-value'>{name}</p>
-          )}
-        </div>
-        <div className='profile__email-container'>
-          <label className='profile__text' htmlFor='email'>
-            E-mail
-          </label>
-          {isEditing ? (
+          </div>
+          <div className='profile__email-container'>
+            <label className='profile__text' htmlFor='email'>
+              E-mail
+            </label>
             <input
               className='profile__input profile__text-value'
               type='email'
               id='email'
-              value={email}
-              onChange={handleChangeEmail}
+              name='email'
+              required
+              value={formValues.email || ''}
+              onChange={handleInputChange}
+              disabled={!isEdit}
             />
-          ) : (
-            <p className='profile__text-value'>{email}</p>
+          </div>
+          {isProfileUpdate && !isEdit && (
+            <p className='profile__success'>Данные успешно обновлены!</p>
           )}
-        </div>
-        {!isEditing ? (
+          <div>
+            {isEdit && (
+              <button
+                type='sumbit'
+                className={`profile__save-button ${
+                  (!isFormValid || !isOtherUserData) &&
+                  'profile__save-button_disabled'
+                }`}
+                onClick={onEditProfile}
+                disabled={!isFormValid || !isOtherUserData}
+              >
+                Сохранить
+              </button>
+            )}
+          </div>
+        </form>
+        {!isEdit && (
           <>
             <button
               className='profile__button'
-              onClick={isEditing ? handleSave : handleEdit}
+              type='button'
+              onClick={onEditProfile}
             >
               Редактировать
             </button>
-            <Link to='/signin' className='profile__exit-button'>
+            <button className='profile__exit-button' onClick={onSignOut}>
               Выйти из аккаунта
-            </Link>
+            </button>
           </>
-        ) : (
-          <button
-            className='profile__save-button'
-            onClick={isEditing ? handleSave : handleEdit}
-          >
-            Сохранить
-          </button>
         )}
       </div>
     </>

@@ -1,10 +1,10 @@
 import Header from '../Header/Header';
 import './Promo.css';
 
-function Promo() {
+function Promo({ loggedIn }) {
   return (
     <div className='promo'>
-      <Header loggedIn={false}></Header>
+      <Header loggedIn={loggedIn}></Header>
       <section className='promo__section'>
         <div className='promo__content'>
           <h1 className='promo__title'>
